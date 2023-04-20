@@ -27,8 +27,6 @@ class _DicesAppState extends State<DicesApp> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('**** build()');
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Dices',
