@@ -3,7 +3,6 @@ import './question.dart';
 class Database {
   static const questions = [
     Question(
-      value: 1,
       text: 'Qual a capital do Egito?',
       options: [
         Option(text: 'Casablanca', correct: false),
@@ -13,7 +12,6 @@ class Database {
       ],
     ),
     Question(
-      value: 1,
       text: 'Qual a nota musical identificada por D#',
       options: [
         Option(text: 'Dó sustenido', correct: false),
@@ -23,7 +21,6 @@ class Database {
       ],
     ),
     Question(
-      value: 1,
       text: 'Qual a linguagem de programação utilizada pelo framework Flutter?',
       options: [
         Option(text: 'Dart', correct: true),
@@ -33,7 +30,6 @@ class Database {
       ],
     ),
     Question(
-      value: 1,
       text: 'Quem escreveu o livro 1984?',
       options: [
         Option(text: 'George Orwell', correct: true),
@@ -43,7 +39,6 @@ class Database {
       ],
     ),
     Question(
-      value: 1,
       text: 'Quem foi a primeira pessoa a viajar no Espaço?',
       options: [
         Option(text: 'Yuri Gagarin', correct: true),
@@ -53,7 +48,6 @@ class Database {
       ],
     ),
     Question(
-      value: 1,
       text: 'Que país tem o formato de uma bota?',
       options: [
         Option(text: 'Itália', correct: true),

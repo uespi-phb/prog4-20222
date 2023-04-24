@@ -1,12 +1,12 @@
 class Question {
-  final int value;
   final String text;
   final List<Option> options;
+  final int value;
 
   const Question({
-    this.value = 1,
     required this.text,
     required this.options,
+    this.value = 1,
   });
 }
 
