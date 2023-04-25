@@ -1,12 +1,12 @@
 class Question {
   final String text;
   final List<Option> options;
-  final int value;
+  final int score;
 
-  const Question({
+  Question({
     required this.text,
     required this.options,
-    this.value = 1,
+    this.score = 1,
   });
 }
 

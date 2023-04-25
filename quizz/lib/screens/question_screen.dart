@@ -22,8 +22,9 @@ class QuestionScreen extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
+          Container(
+            height: 90.0,
+            padding: const EdgeInsets.all(24.0),
             child: Text(
               question.text,
               style: const TextStyle(

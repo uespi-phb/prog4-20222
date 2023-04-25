@@ -6,14 +6,16 @@ import '../models/database.dart';
 import '../models/question.dart';
 
 class QuizzResult {
-  final int count;
-  final int wright;
-  final int score;
+  final int questionCount;
+  final int questionWright;
+  final int scorePlayer;
+  final int scoreTotal;
 
   QuizzResult({
-    required this.count,
-    required this.wright,
-    required this.score,
+    required this.questionCount,
+    required this.questionWright,
+    required this.scorePlayer,
+    required this.scoreTotal,
   });
 }
 
@@ -30,16 +32,36 @@ class _MainScreenState extends State<MainScreen> {
   int _quizzScore = 0;
   int _quizzWright = 0;
 
+  @override
+  void initState() {
+    super.initState();
+    _shuffleQuestions();
+  }
+
+  void _shuffleQuestions() {
+    _questions.shuffle();
+    for (var question in _questions) {
+      question.options.shuffle();
+    }
+  }
+
   void _optionSelected(Option option) {
     setState(() {
-      _quizzScore += _questions[_quizzIndex].value;
-      _quizzWright++;
       if (option.correct) {
-        _quizzIndex++;
+        _quizzScore += _questions[_quizzIndex].score;
+        _quizzWright++;
       }
+      _quizzIndex++;
     });
-    debugPrint('index = $_quizzIndex');
-    debugPrint('score = $_quizzScore');
+  }
+
+  void _restart() {
+    setState(() {
+      _quizzIndex = 0;
+      _quizzScore = 0;
+      _quizzWright = 0;
+    });
+    _shuffleQuestions();
   }
 
   @override
@@ -50,11 +72,12 @@ class _MainScreenState extends State<MainScreen> {
             optionPressed: _optionSelected,
           )
         : ResultScreen(
+            restart: _restart,
             result: QuizzResult(
-              count: _questions.length,
-              wright: _quizzWright,
-              score: _quizzScore,
-            ),
+                questionCount: _questions.length,
+                questionWright: _quizzWright,
+                scorePlayer: _quizzScore,
+                scoreTotal: _questions.fold(0, (sum, q) => sum + q.score)),
           );
   }
 }
