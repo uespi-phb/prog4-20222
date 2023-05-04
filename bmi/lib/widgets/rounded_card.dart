@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../colors.dart';
+import '../consts.dart';
 
 class RoundedCard extends StatelessWidget {
   final Widget? child;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import './pages/main_page.dart';
-import './colors.dart';
+import 'consts.dart';
 
 class BMIApp extends StatelessWidget {
   const BMIApp({super.key});

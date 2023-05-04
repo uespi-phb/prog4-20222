@@ -1,3 +1,4 @@
+import 'package:bmi/consts.dart';
 import 'package:flutter/material.dart';
 
 class IconText extends StatelessWidget {
@@ -16,11 +17,14 @@ class IconText extends StatelessWidget {
       children: [
         Icon(
           icon,
-          size: 48.0,
+          size: 64.0,
           weight: 900.0,
         ),
         const SizedBox(height: 8.0),
-        Text(text),
+        Text(
+          text,
+          style: kTitleTextStyle,
+        ),
       ],
     );
   }
