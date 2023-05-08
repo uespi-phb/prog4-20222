@@ -21,12 +21,11 @@ class ElevatedRoundButton extends StatelessWidget {
         backgroundColor: kRoundButtonColor,
         minimumSize: const Size.fromRadius(kRoundButtonRadius),
         shape: const CircleBorder(),
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(12.0),
       ),
       child: Icon(
         icon,
-        size: 36.0,
-        weight: 100.0,
+        size: 14.0,
         color: Colors.white,
       ),
     );

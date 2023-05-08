@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import './pages/main_page.dart';
-import 'consts.dart';
+import './pages/result_page.dart';
+import './routes.dart';
+import './consts.dart';
 
 class BMIApp extends StatelessWidget {
   const BMIApp({super.key});
@@ -15,7 +17,11 @@ class BMIApp extends StatelessWidget {
         primaryColor: kUnselectedColor,
         scaffoldBackgroundColor: kSelectedColor,
       ),
-      home: const MainPage(),
+      initialRoute: Routes.root,
+      routes: {
+        Routes.root: (context) => const MainPage(),
+        Routes.result: (context) => const ResultPage(),
+      },
     );
   }
 }

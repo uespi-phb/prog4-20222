@@ -2,6 +2,8 @@ import 'package:bmi/consts.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../routes.dart';
+import '../types.dart';
 import '../widgets/ajustable_value_card.dart';
 import '../widgets/icon_text.dart';
 import '../widgets/rounded_card.dart';
@@ -14,6 +16,11 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  Genre _genre = Genre.female;
+  int _height = 175;
+  int _weight = 55;
+  int _age = 38;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,28 +32,53 @@ class _MainPageState extends State<MainPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
-            children: const [
+            children: [
               Expanded(
                 flex: 50,
-                child: RoundedCard(
-                  child: IconText(
-                    icon: FontAwesomeIcons.mars,
-                    text: 'HOMEM',
+                child: GestureDetector(
+                  onTap: () {
+                    if (_genre != Genre.male) {
+                      setState(() {
+                        _genre = Genre.male;
+                      });
+                    }
+                  },
+                  child: RoundedCard(
+                    color: (_genre == Genre.male)
+                        ? kActiveCardColor
+                        : kInactiveCardColor,
+                    child: const IconText(
+                      icon: FontAwesomeIcons.mars,
+                      text: 'HOMEM',
+                    ),
                   ),
                 ),
               ),
               Expanded(
                 flex: 50,
-                child: RoundedCard(
-                  child: IconText(
-                    icon: FontAwesomeIcons.venus,
-                    text: 'MULHER',
+                child: GestureDetector(
+                  onTap: () {
+                    if (_genre != Genre.female) {
+                      setState(() {
+                        _genre = Genre.female;
+                      });
+                    }
+                  },
+                  child: RoundedCard(
+                    color: (_genre == Genre.female)
+                        ? kActiveCardColor
+                        : kInactiveCardColor,
+                    child: const IconText(
+                      icon: FontAwesomeIcons.venus,
+                      text: 'MULHER',
+                    ),
                   ),
                 ),
               ),
             ],
           ),
           RoundedCard(
+            color: kInactiveCardColor,
             child: Column(
               children: [
                 const Text(
@@ -57,33 +89,37 @@ class _MainPageState extends State<MainPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.baseline,
                   textBaseline: TextBaseline.alphabetic,
-                  children: const [
+                  children: [
                     Text(
-                      '175',
+                      _height.toStringAsFixed(0),
                       style: kNumberTextStyle,
                     ),
-                    SizedBox(width: 8.0),
-                    Text(
+                    const SizedBox(width: 8.0),
+                    const Text(
                       'cm',
                       style: kTitleTextStyle,
                     ),
                   ],
                 ),
-                const SizedBox(height: 12.0),
+                const SizedBox(height: 8.0),
                 SliderTheme(
                   data: const SliderThemeData(
                     thumbShape: RoundSliderThumbShape(
-                      enabledThumbRadius: 15.0,
+                      enabledThumbRadius: 12.0,
                     ),
                     overlayShape: RoundSliderOverlayShape(
-                      overlayRadius: 28.0,
+                      overlayRadius: 22.0,
                     ),
                   ),
                   child: Slider(
-                    onChanged: (value) {},
+                    onChanged: (value) {
+                      setState(() {
+                        _height = value.toInt();
+                      });
+                    },
                     min: 100.0,
                     max: 250.0,
-                    value: 170.0,
+                    value: _height.toDouble(),
                     activeColor: kSliderActiveColor,
                     inactiveColor: kSliderInactiveColor,
                     thumbColor: kSliderThumbColor,
@@ -93,24 +129,32 @@ class _MainPageState extends State<MainPage> {
             ),
           ),
           Row(
-            children: const [
+            children: [
               Expanded(
                 child: AjustableValueCard(
                   title: 'PESO',
-                  value: 50,
+                  value: _weight,
+                  onChanged: (value) {
+                    _weight = value;
+                  },
                 ),
               ),
               Expanded(
                 child: AjustableValueCard(
                   title: 'IDADE',
-                  value: 28,
+                  value: _age,
+                  onChanged: (value) {
+                    _age = value;
+                  },
                 ),
               ),
             ],
           ),
           const SizedBox(height: 10.0),
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(Routes.result);
+            },
             style: TextButton.styleFrom(
               foregroundColor: kButtonActiveColor,
               fixedSize: kButtonSize,

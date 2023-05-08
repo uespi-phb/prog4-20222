@@ -17,8 +17,7 @@ class IconText extends StatelessWidget {
       children: [
         Icon(
           icon,
-          size: 64.0,
-          weight: 900.0,
+          size: 48.0,
         ),
         const SizedBox(height: 8.0),
         Text(

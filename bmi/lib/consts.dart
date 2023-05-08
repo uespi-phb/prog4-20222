@@ -4,10 +4,10 @@ const kSelectedColor = Color(0xff0a0e21);
 const kUnselectedColor = Color(0xff4d1e33);
 
 const kBackgroundColor = Colors.black;
-const kAppBarBackgroundColor = kInactiveCardColor;
+const kAppBarBackgroundColor = kActiveCardColor;
 
-const kActiveCardColor = Color(0xff4d1e33);
-const kInactiveCardColor = Color(0xff0a0e21);
+const kActiveCardColor = Color.fromARGB(255, 14, 20, 52);
+const kInactiveCardColor = Color(0xff4d1e33);
 
 const kNumberTextColor = Colors.white;
 const kTitleTextColor = Color(0xff8d8e98);
@@ -26,11 +26,17 @@ const kButtonColor = Color(0xffeb1555);
 
 const kTitleTextStyle = TextStyle(
   color: kTitleTextColor,
-  fontSize: 18.0,
+  fontSize: 16.0,
 );
 
 const kNumberTextStyle = TextStyle(
   color: kNumberTextColor,
-  fontSize: 54.0,
+  fontSize: 42.0,
   fontWeight: FontWeight.w900,
+);
+
+const kBigTitleTextStyle = TextStyle(
+  color: Colors.white,
+  fontSize: 24.0,
+  fontWeight: FontWeight.bold,
 );
