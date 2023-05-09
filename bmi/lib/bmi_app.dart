@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 import './pages/main_page.dart';
 import './pages/result_page.dart';
+import './models/bmi_data.dart';
 import './routes.dart';
 import './consts.dart';
 
-class BMIApp extends StatelessWidget {
-  const BMIApp({super.key});
+class BmiApp extends StatelessWidget {
+  const BmiApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +20,11 @@ class BMIApp extends StatelessWidget {
       ),
       initialRoute: Routes.root,
       routes: {
-        Routes.root: (context) => const MainPage(),
-        Routes.result: (context) => const ResultPage(),
+        Routes.root: (_) => const MainPage(),
+        Routes.result: (context) {
+          final data = ModalRoute.of(context)!.settings.arguments as BmiData;
+          return ResultPage(bmiData: data);
+        },
       },
     );
   }

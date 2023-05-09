@@ -1,4 +1,4 @@
 class Routes {
-  static String root = '/';
-  static String result = '/result';
+  static const String root = '/';
+  static const String result = '/result';
 }

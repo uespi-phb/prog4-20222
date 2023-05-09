@@ -42,6 +42,7 @@ class _AjustableValueCardState extends State<AjustableValueCard> {
     return RoundedCard(
       color: kInactiveCardColor,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text(
             widget.title,

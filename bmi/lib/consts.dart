@@ -40,3 +40,9 @@ const kBigTitleTextStyle = TextStyle(
   fontSize: 24.0,
   fontWeight: FontWeight.bold,
 );
+
+final kDiagnosticTextStyle = TextStyle(
+  color: Colors.green.shade600,
+  fontSize: 24.0,
+  fontWeight: FontWeight.bold,
+);
