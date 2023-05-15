@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:meals/pages/category_page.dart';
+
+import '../pages/main_page.dart';
 
 class MealsApp extends StatelessWidget {
   const MealsApp({super.key});
@@ -10,7 +11,8 @@ class MealsApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Tudo Gostoso!',
       theme: ThemeData(
-        primaryColor: Colors.pink,
+        colorSchemeSeed: Colors.pink,
+        brightness: Brightness.light,
         canvasColor: const Color.fromRGBO(255, 254, 229, 1.0),
         fontFamily: 'Raleway',
         textTheme: ThemeData.light().textTheme.copyWith(
@@ -19,11 +21,8 @@ class MealsApp extends StatelessWidget {
                 fontFamily: 'RobotoCondensed',
               ),
             ),
-        colorScheme: ColorScheme.fromSwatch().copyWith(
-          secondary: Colors.amber,
-        ),
       ),
-      home: const CategoryPage(),
+      home: const MainPage(),
     );
   }
 }
