@@ -45,7 +45,7 @@ class _MainPageState extends State<MainPage> {
       body: _createPage(_pageIndex),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Theme.of(context).primaryColor,
-        selectedItemColor: Theme.of(context).colorScheme.secondary,
+        selectedItemColor: Colors.white,
         currentIndex: _pageIndex,
         items: const [
           BottomNavigationBarItem(
