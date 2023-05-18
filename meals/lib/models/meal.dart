@@ -1,13 +1,21 @@
 enum Complexity {
   simple,
   medium,
-  difficult,
+  difficult;
+
+  String get string {
+    const names = ['Simples', 'Média', 'Alta'];
+    return names[index];
+  }
 }
 
 enum Cost {
-  cheap,
-  fair,
-  expensive,
+  cheap('Barato'),
+  fair('Normal'),
+  expensive('Caro');
+
+  final String string;
+  const Cost(this.string);
 }
 
 class Meal {

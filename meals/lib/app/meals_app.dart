@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:meals/pages/meal_detail_page.dart';
 
 import '../models/category.dart';
+import '../models/meal.dart';
 import './app_routes.dart';
 import '../pages/category_meals_page.dart';
 import '../pages/main_page.dart';
@@ -33,6 +35,10 @@ class MealsApp extends StatelessWidget {
               ModalRoute.of(context)?.settings.arguments as Category;
           return CategoryMealsPage(category: category);
         },
+        AppRoutes.mealDetail: (context) {
+          final meal = ModalRoute.of(context)?.settings.arguments as Meal;
+          return MealDetailPage(meal: meal);
+        }
       },
     );
   }

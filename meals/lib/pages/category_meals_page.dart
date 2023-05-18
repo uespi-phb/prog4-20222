@@ -30,6 +30,7 @@ class CategoryMealsPage extends StatelessWidget {
         title: Text(category.title),
       ),
       body: ListView.builder(
+        padding: EdgeInsets.zero,
         itemCount: meals.length,
         itemBuilder: (_, index) => MealCard(meals[index]),
       ),
