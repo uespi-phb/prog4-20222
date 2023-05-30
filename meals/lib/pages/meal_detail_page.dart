@@ -46,18 +46,22 @@ class MealDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _favoriteButtonBuilder(BuildContext context, dynamic _, Widget? __) {
+  Widget _favoriteButtonBuilder(BuildContext context) {
     final provider = Provider.of<MealsProvider>(context, listen: false);
+
+    debugPrint('***** builder()');
 
     return FloatingActionButton(
       backgroundColor: Colors.amber.shade400,
       foregroundColor: Colors.grey.shade700,
-      child: Icon(
-        meal.isFavorite ? Icons.star : Icons.star_border_outlined,
+      child: Consumer<MealsProvider>(
+        builder: (_, __, ___) => Icon(
+          meal.isFavorite ? Icons.star : Icons.star_border_outlined,
+        ),
       ),
       onPressed: () {
         provider.toggleFavorite(meal);
-        print('***** ${meal.isFavorite}');
+        debugPrint('***** ${meal.isFavorite}');
       },
     );
   }
@@ -68,15 +72,13 @@ class MealDetailPage extends StatelessWidget {
     final steps = List.generate(
         meal.steps.length, (index) => _stepToWidget(context, index));
 
-    print('#### build()');
+    debugPrint('#### build()');
 
     return Scaffold(
       appBar: AppBar(
         title: Text(meal.title),
       ),
-      floatingActionButton: Consumer<MealsProvider>(
-        builder: _favoriteButtonBuilder,
-      ),
+      floatingActionButton: _favoriteButtonBuilder(context),
       body: SingleChildScrollView(
         child: Column(
           children: [

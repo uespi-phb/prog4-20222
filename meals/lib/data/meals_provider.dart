@@ -11,8 +11,26 @@ class MealsProvider with ChangeNotifier {
   final List<Category> categories = kCategories;
   final AppSettings settings = AppSettings();
 
-  List<Meal> categoryMeals(Category category) =>
-      meals.where((meal) => meal.categories.contains(category.id)).toList();
+  List<Meal> categoryMeals(Category category) {
+    return meals.where((meal) {
+      bool flag = true;
+
+      if (settings.isGlutenFree) {
+        flag = flag && meal.isGlutenFree;
+      }
+      if (settings.isLactoseFree) {
+        flag = flag && meal.isLactoseFree;
+      }
+      if (settings.isVegetarian) {
+        flag = flag && meal.isVegetarian;
+      }
+      if (settings.isVegan) {
+        flag = flag && meal.isVegan;
+      }
+
+      return flag && meal.categories.contains(category.id);
+    }).toList();
+  }
 
   List<Meal> favoriteMeals() => meals.where((meal) => meal.isFavorite).toList();
 

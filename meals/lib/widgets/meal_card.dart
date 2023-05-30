@@ -8,6 +8,25 @@ class MealCard extends StatelessWidget {
 
   const MealCard(this.meal, {super.key});
 
+  // ignore: unused_element
+  String _mealFlags(Meal meal) {
+    String flags = '';
+
+    if (meal.isGlutenFree) {
+      flags = '${flags}G';
+    }
+    if (meal.isLactoseFree) {
+      flags = '${flags}L';
+    }
+    if (meal.isVegetarian) {
+      flags = '${flags}V';
+    }
+    if (meal.isVegan) {
+      flags = '${flags}X';
+    }
+    return flags;
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -98,6 +117,7 @@ class MealCard extends StatelessWidget {
                 ],
               ),
             ),
+            // Text(_mealFlags(meal)),
           ],
         ),
       ),

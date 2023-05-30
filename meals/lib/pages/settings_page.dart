@@ -11,8 +11,6 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     //final provider = Provider.of<MealsProvider>(context, listen: false);
 
-    print('****build()');
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Configurações'),
