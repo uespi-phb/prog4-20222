@@ -50,8 +50,4 @@ class Meal {
     required this.isVegetarian,
     this.isFavorite = false,
   });
-
-  void toggleFavorite() {
-    isFavorite = !isFavorite;
-  }
 }

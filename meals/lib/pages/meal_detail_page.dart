@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../data/meals_provider.dart';
 import '../models/meal.dart';
 import '../widgets/information_box.dart';
 
-class MealDetailPage extends StatefulWidget {
+class MealDetailPage extends StatelessWidget {
   final Meal meal;
 
   const MealDetailPage({
@@ -11,11 +13,6 @@ class MealDetailPage extends StatefulWidget {
     required this.meal,
   });
 
-  @override
-  State<MealDetailPage> createState() => _MealDetailPageState();
-}
-
-class _MealDetailPageState extends State<MealDetailPage> {
   Widget _ingredientToWidget(String text) {
     return Container(
       width: double.infinity,
@@ -42,45 +39,49 @@ class _MealDetailPageState extends State<MealDetailPage> {
         foregroundColor: Theme.of(context).canvasColor,
         child: Text('${index + 1}'),
       ),
-      title: Text(widget.meal.steps[index],
+      title: Text(meal.steps[index],
           style: const TextStyle(
             fontSize: 12.0,
           )),
     );
   }
 
+  Widget _favoriteButtonBuilder(BuildContext context, dynamic _, Widget? __) {
+    final provider = Provider.of<MealsProvider>(context, listen: false);
+
+    return FloatingActionButton(
+      backgroundColor: Colors.amber.shade400,
+      foregroundColor: Colors.grey.shade700,
+      child: Icon(
+        meal.isFavorite ? Icons.star : Icons.star_border_outlined,
+      ),
+      onPressed: () {
+        provider.toggleFavorite(meal);
+        print('***** ${meal.isFavorite}');
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final ingredients =
-        widget.meal.ingredients.map(_ingredientToWidget).toList();
+    final ingredients = meal.ingredients.map(_ingredientToWidget).toList();
     final steps = List.generate(
-        widget.meal.steps.length, (index) => _stepToWidget(context, index));
+        meal.steps.length, (index) => _stepToWidget(context, index));
 
-    // final steps = meal.steps.map(_stepToWidget).toList();
-
-    debugPrint('build()');
+    print('#### build()');
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.meal.title),
+        title: Text(meal.title),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.amber.shade400,
-        foregroundColor: Colors.grey.shade700,
-        child: Icon(
-          widget.meal.isFavorite ? Icons.star : Icons.star_border_outlined,
-        ),
-        onPressed: () {
-          setState(() {
-            widget.meal.toggleFavorite();
-          });
-        },
+      floatingActionButton: Consumer<MealsProvider>(
+        builder: _favoriteButtonBuilder,
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Image.network(
-              widget.meal.imageUrl,
+              meal.imageUrl,
               height: 250.0,
               width: double.infinity,
               fit: BoxFit.cover,

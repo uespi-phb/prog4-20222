@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:meals/data/meals_provider.dart';
+import 'package:provider/provider.dart';
 
-import '../data/database.dart';
 import '../models/category.dart';
-import '../models/meal.dart';
 import '../widgets/meal_card.dart';
 
 class CategoryMealsPage extends StatelessWidget {
@@ -13,17 +13,9 @@ class CategoryMealsPage extends StatelessWidget {
     required this.category,
   });
 
-  List<Meal> _mealsList() {
-    return Database.meals
-        .where(
-          (meal) => meal.categories.contains(category.id),
-        )
-        .toList();
-  }
-
   @override
   Widget build(BuildContext context) {
-    final meals = _mealsList();
+    final meals = Provider.of<MealsProvider>(context).categoryMeals(category);
 
     return Scaffold(
       appBar: AppBar(

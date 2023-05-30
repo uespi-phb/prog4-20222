@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../data/database.dart';
+import '../data/meals_provider.dart';
 import '../widgets/category_card.dart';
 
 class CategoryPage extends StatelessWidget {
@@ -8,6 +9,9 @@ class CategoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final categories =
+        Provider.of<MealsProvider>(context, listen: false).categories;
+
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: GridView(
@@ -17,7 +21,7 @@ class CategoryPage extends StatelessWidget {
           mainAxisSpacing: 20.0,
           childAspectRatio: 3 / 2,
         ),
-        children: Database.categories
+        children: categories
             .map((category) => CategoryCard(category: category))
             .toList(),
       ),

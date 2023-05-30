@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../data/database.dart';
+import '../data/meals_provider.dart';
 import '../widgets/meal_card.dart';
 
 class FavoritesPage extends StatelessWidget {
@@ -8,12 +9,13 @@ class FavoritesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final favoriteMeals = Database.favoriteMeals;
+    final favorites =
+        Provider.of<MealsProvider>(context, listen: true).favoriteMeals();
 
     return ListView.builder(
       padding: EdgeInsets.zero,
-      itemCount: favoriteMeals.length,
-      itemBuilder: (_, index) => MealCard(favoriteMeals[index]),
+      itemCount: favorites.length,
+      itemBuilder: (_, index) => MealCard(favorites[index]),
     );
   }
 }

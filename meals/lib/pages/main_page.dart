@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meals/pages/favorites_page.dart';
+import 'package:meals/widgets/app_drawer.dart';
 
 import './category_page.dart';
 
@@ -42,6 +43,7 @@ class _MainPageState extends State<MainPage> {
         title: _createTitle(_pageIndex),
         centerTitle: true,
       ),
+      drawer: const AppDrawer(),
       body: _createPage(_pageIndex),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Theme.of(context).primaryColor,
