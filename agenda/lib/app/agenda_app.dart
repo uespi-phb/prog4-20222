@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'app_route.dart';
 import '../pages/main_page.dart';
 import '../pages/contact_page.dart';
+import '../models/contact.dart';
 
 class AgendaApp extends StatelessWidget {
   const AgendaApp({super.key});
@@ -17,8 +18,14 @@ class AgendaApp extends StatelessWidget {
       ),
       initialRoute: AppRoute.home.name,
       routes: {
-        AppRoute.home.name: (_) => const MainPage(),
-        AppRoute.newContact.name: (_) => const ContactPage(),
+        AppRoute.home.name: (_) => MainPage(),
+        AppRoute.newContact.name: (context) {
+          final contact =
+              ModalRoute.of(context)?.settings.arguments as Contact?;
+          return ContactPage(
+            contact: contact,
+          );
+        },
       },
     );
   }

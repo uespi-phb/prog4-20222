@@ -4,10 +4,10 @@ class Contact {
   final String email;
   final String phone;
 
-  Contact(
-    this.id,
-    this.name,
-    this.email,
-    this.phone,
-  );
+  Contact({
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.phone,
+  });
 }
