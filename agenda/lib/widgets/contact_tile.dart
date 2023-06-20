@@ -14,16 +14,25 @@ class ContactTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Image.asset(AppImages.person),
-      title: Text(contact.name),
-      subtitle: Text(contact.email),
-      onTap: () {
-        Navigator.of(context).pushNamed(
-          AppRoute.newContact.name,
-          arguments: contact,
-        );
-      },
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      child: ListTile(
+        leading: Image.asset(AppImages.person),
+        title: Text(contact.name),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(contact.phone),
+            Text(contact.email),
+          ],
+        ),
+        onTap: () {
+          Navigator.of(context).pushNamed(
+            AppRoute.newContact.name,
+            arguments: contact,
+          );
+        },
+      ),
     );
   }
 }

@@ -11,3 +11,5 @@ class Contact {
     required this.phone,
   });
 }
+
+typedef ContactMap = Map<String, String>;

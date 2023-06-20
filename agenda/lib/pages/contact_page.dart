@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../app/app_images.dart';
 import '../models/contact.dart';
+import '../providers/contact_provider.dart';
 
 class ContactPage extends StatefulWidget {
   final Contact? contact;
@@ -20,24 +22,35 @@ class _ContactPageState extends State<ContactPage> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
-  final _contactData = <String, String>{};
+  final ContactMap _contactData = {};
+
+  Contact? get contact => widget.contact;
 
   @override
   void initState() {
     super.initState();
-    _nameController.text = widget.contact?.name ?? '';
-    _emailController.text = widget.contact?.email ?? '';
-    _phoneController.text = widget.contact?.phone ?? '';
+    _nameController.text = contact?.name ?? 'Fulano de Tal';
+    _emailController.text = contact?.email ?? 'fulano@email.com';
+    _phoneController.text = contact?.phone ?? '86998817766';
   }
 
-  void _saveContact() {
+  void _saveContact() async {
     if (!_formKey.currentState!.validate()) {
       return;
+    }
+
+    if (contact != null) {
+      _contactData['id'] = contact!.id;
     }
 
     _contactData['name'] = _nameController.text.trim();
     _contactData['email'] = _emailController.text.trim();
     _contactData['phone'] = _phoneController.text.trim();
+
+    final provider = Provider.of<ContactProvider>(context, listen: false);
+    await provider.saveContact(_contactData);
+    // ignore: use_build_context_synchronously
+    Navigator.of(context).pop();
   }
 
   String? isNotEmpty(String? text) {
@@ -75,7 +88,7 @@ class _ContactPageState extends State<ContactPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Novo Contato'),
+        title: Text((contact == null) ? 'Novo Contato' : 'Editar Contato'),
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(

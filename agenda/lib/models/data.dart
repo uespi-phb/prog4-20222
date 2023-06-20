@@ -2,10 +2,10 @@ import './contact.dart';
 
 final kContactData = [
   Contact(
-    id: 'id1',
+    id: '-NYKOzvUjflbEREfL69_',
     name: 'Fulano de Tal',
     email: 'fulano@email.com',
-    phone: '99881-1122',
+    phone: '86998817766',
   ),
   Contact(
     id: 'id2',

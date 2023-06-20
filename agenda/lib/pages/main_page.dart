@@ -1,16 +1,31 @@
+import 'package:agenda/providers/contact_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../app/app_route.dart';
-import '../models/data.dart';
 import '../widgets/contact_tile.dart';
 
-class MainPage extends StatelessWidget {
-  final _contactData = kContactData;
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
 
-  MainPage({super.key});
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  @override
+  void initState() {
+    super.initState();
+
+    final provider = Provider.of<ContactProvider>(context, listen: false);
+    provider.loadContacts();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<ContactProvider>(context, listen: true);
+    final contacts = provider.contacts;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Contatos'),
@@ -26,8 +41,8 @@ class MainPage extends StatelessWidget {
         ),
       ),
       body: ListView.builder(
-        itemCount: _contactData.length,
-        itemBuilder: (context, index) => ContactTile(_contactData[index]),
+        itemCount: contacts.length,
+        itemBuilder: (context, index) => ContactTile(contacts[index]),
       ),
     );
   }
