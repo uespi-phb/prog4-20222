@@ -41,16 +41,29 @@ class ContactProvider with ChangeNotifier {
 
   Future<void> _addContact(ContactMap contact) {
     final url = '$_baseUrl/contacts.json';
-    return http.post(
+    final future = http.post(
       Uri.parse(url),
       body: jsonEncode(contact),
     );
+    return future.then((response) {
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+
+        _contacts.add(Contact(
+          id: data['name'],
+          name: contact['name']!,
+          email: contact['email']!,
+          phone: contact['phone']!,
+        ));
+        notifyListeners();
+      }
+    });
   }
 
   Future<void> _updateContact(ContactMap contact) {
-    final id = contact['id'];
+    final id = contact['id']!;
     final url = '$_baseUrl/contacts/$id.json';
-    return http.patch(
+    final future = http.patch(
       Uri.parse(url),
       body: jsonEncode({
         'name': contact['name'],
@@ -58,5 +71,17 @@ class ContactProvider with ChangeNotifier {
         'phone': contact['phone'],
       }),
     );
+    return future.then((response) {
+      if (response.statusCode == 200) {
+        final index = _contacts.indexWhere((contact) => contact.id == id);
+        _contacts[index] = Contact(
+          id: id,
+          name: contact['name']!,
+          email: contact['email']!,
+          phone: contact['phone']!,
+        );
+      }
+      notifyListeners();
+    });
   }
 }

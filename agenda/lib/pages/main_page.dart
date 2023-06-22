@@ -17,6 +17,7 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
 
+    debugPrint('initState()');
     final provider = Provider.of<ContactProvider>(context, listen: false);
     provider.loadContacts();
   }
@@ -25,6 +26,8 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     final provider = Provider.of<ContactProvider>(context, listen: true);
     final contacts = provider.contacts;
+
+    debugPrint('build(): $contacts');
 
     return Scaffold(
       appBar: AppBar(

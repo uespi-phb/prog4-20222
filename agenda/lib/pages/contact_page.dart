@@ -34,7 +34,7 @@ class _ContactPageState extends State<ContactPage> {
     _phoneController.text = contact?.phone ?? '86998817766';
   }
 
-  void _saveContact() async {
+  void _saveContact() {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -48,9 +48,9 @@ class _ContactPageState extends State<ContactPage> {
     _contactData['phone'] = _phoneController.text.trim();
 
     final provider = Provider.of<ContactProvider>(context, listen: false);
-    await provider.saveContact(_contactData);
-    // ignore: use_build_context_synchronously
-    Navigator.of(context).pop();
+    provider.saveContact(_contactData).then((value) {
+      Navigator.of(context).pop();
+    });
   }
 
   String? isNotEmpty(String? text) {
