@@ -29,12 +29,15 @@ class _ContactPageState extends State<ContactPage> {
   @override
   void initState() {
     super.initState();
-    _nameController.text = contact?.name ?? 'Fulano de Tal';
-    _emailController.text = contact?.email ?? 'fulano@email.com';
-    _phoneController.text = contact?.phone ?? '86998817766';
+
+    if (contact != null) {
+      _nameController.text = contact!.name;
+      _emailController.text = contact!.email;
+      _phoneController.text = contact!.phone;
+    }
   }
 
-  void _saveContact() {
+  void _saveContact() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -48,9 +51,10 @@ class _ContactPageState extends State<ContactPage> {
     _contactData['phone'] = _phoneController.text.trim();
 
     final provider = Provider.of<ContactProvider>(context, listen: false);
-    provider.saveContact(_contactData).then((value) {
+    await provider.saveContact(_contactData);
+    if (context.mounted) {
       Navigator.of(context).pop();
-    });
+    }
   }
 
   String? isNotEmpty(String? text) {

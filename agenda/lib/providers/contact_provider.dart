@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -7,13 +8,14 @@ import '../models/contact.dart';
 
 class ContactProvider with ChangeNotifier {
   final _baseUrl = 'https://agenda-8bc86-default-rtdb.firebaseio.com';
+  final _collectionName = 'contacts';
 
   final List<Contact> _contacts = [];
 
   List<Contact> get contacts => _contacts;
 
   void loadContacts() {
-    final url = '$_baseUrl/contacts.json';
+    final url = '$_baseUrl/$_collectionName.json';
 
     final future = http.get(Uri.parse(url));
     future.then((response) {
@@ -31,39 +33,40 @@ class ContactProvider with ChangeNotifier {
     });
   }
 
-  Future<void> saveContact(ContactMap contact) {
+  Future<void> saveContact(ContactMap contact) async {
     if (contact['id'] == null) {
-      return _addContact(contact);
+      await _addContact(contact);
     } else {
-      return _updateContact(contact);
+      await _updateContact(contact);
     }
   }
 
-  Future<void> _addContact(ContactMap contact) {
-    final url = '$_baseUrl/contacts.json';
-    final future = http.post(
+  Future<void> _addContact(ContactMap contact) async {
+    final url = '$_baseUrl/$_collectionName.json';
+
+    final response = await http.post(
       Uri.parse(url),
       body: jsonEncode(contact),
     );
-    return future.then((response) {
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
 
-        _contacts.add(Contact(
-          id: data['name'],
-          name: contact['name']!,
-          email: contact['email']!,
-          phone: contact['phone']!,
-        ));
-        notifyListeners();
-      }
-    });
+    if (response.statusCode == HttpStatus.ok) {
+      final data = jsonDecode(response.body);
+
+      _contacts.add(Contact(
+        id: data['name'],
+        name: contact['name']!,
+        email: contact['email']!,
+        phone: contact['phone']!,
+      ));
+      notifyListeners();
+    }
   }
 
-  Future<void> _updateContact(ContactMap contact) {
+  Future<void> _updateContact(ContactMap contact) async {
     final id = contact['id']!;
-    final url = '$_baseUrl/contacts/$id.json';
-    final future = http.patch(
+    final url = '$_baseUrl/$_collectionName/$id.json';
+
+    final response = await http.patch(
       Uri.parse(url),
       body: jsonEncode({
         'name': contact['name'],
@@ -71,17 +74,26 @@ class ContactProvider with ChangeNotifier {
         'phone': contact['phone'],
       }),
     );
-    return future.then((response) {
-      if (response.statusCode == 200) {
-        final index = _contacts.indexWhere((contact) => contact.id == id);
-        _contacts[index] = Contact(
-          id: id,
-          name: contact['name']!,
-          email: contact['email']!,
-          phone: contact['phone']!,
-        );
-      }
-      notifyListeners();
-    });
+
+    if (response.statusCode == HttpStatus.ok) {
+      final index = _contacts.indexWhere((contact) => contact.id == id);
+      _contacts[index] = Contact(
+        id: id,
+        name: contact['name']!,
+        email: contact['email']!,
+        phone: contact['phone']!,
+      );
+    }
+    notifyListeners();
+  }
+
+  Future<void> deleteContact(String id) async {
+    final url = '$_baseUrl/$_collectionName/$id.json';
+    final response = await http.delete(
+      Uri.parse(url),
+    );
+    if (response.statusCode == HttpStatus.ok) {
+      //
+    }
   }
 }
