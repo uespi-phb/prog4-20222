@@ -14,23 +14,26 @@ class ContactProvider with ChangeNotifier {
 
   List<Contact> get contacts => _contacts;
 
-  void loadContacts() {
+  Future<void> loadContacts() async {
     final url = '$_baseUrl/$_collectionName.json';
 
-    final future = http.get(Uri.parse(url));
-    future.then((response) {
-      final Map<String, dynamic> body = jsonDecode(response.body);
+    final response = await http.get(Uri.parse(url));
 
-      body.forEach((id, data) {
-        _contacts.add(Contact(
-          id: id,
-          name: data['name'],
-          email: data['email'],
-          phone: data['phone'],
-        ));
-      });
-      notifyListeners();
+    if (response.statusCode != HttpStatus.ok) {
+      throw Exception('Erro ao recuperar contatos');
+    }
+
+    final Map<String, dynamic> body = jsonDecode(response.body);
+
+    body.forEach((id, data) {
+      _contacts.add(Contact(
+        id: id,
+        name: data['name'],
+        email: data['email'],
+        phone: data['phone'],
+      ));
     });
+    notifyListeners();
   }
 
   Future<void> saveContact(ContactMap contact) async {
@@ -59,6 +62,8 @@ class ContactProvider with ChangeNotifier {
         phone: contact['phone']!,
       ));
       notifyListeners();
+    } else {
+      throw Exception('Erro criando contato');
     }
   }
 
@@ -83,8 +88,10 @@ class ContactProvider with ChangeNotifier {
         email: contact['email']!,
         phone: contact['phone']!,
       );
+      notifyListeners();
+    } else {
+      throw Exception('Erro atualizando contato');
     }
-    notifyListeners();
   }
 
   Future<void> deleteContact(String id) async {
@@ -92,8 +99,8 @@ class ContactProvider with ChangeNotifier {
     final response = await http.delete(
       Uri.parse(url),
     );
-    if (response.statusCode == HttpStatus.ok) {
-      //
+    if (response.statusCode != HttpStatus.ok) {
+      throw Exception('Erro removendo contato');
     }
   }
 }

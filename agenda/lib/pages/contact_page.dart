@@ -24,6 +24,8 @@ class _ContactPageState extends State<ContactPage> {
   final _phoneController = TextEditingController();
   final ContactMap _contactData = {};
 
+  bool _isLoading = false;
+
   Contact? get contact => widget.contact;
 
   @override
@@ -37,7 +39,7 @@ class _ContactPageState extends State<ContactPage> {
     }
   }
 
-  void _saveContact() async {
+  void _formSubmit() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -51,10 +53,36 @@ class _ContactPageState extends State<ContactPage> {
     _contactData['phone'] = _phoneController.text.trim();
 
     final provider = Provider.of<ContactProvider>(context, listen: false);
-    await provider.saveContact(_contactData);
-    if (context.mounted) {
-      Navigator.of(context).pop();
+
+    setState(() => _isLoading = true);
+    try {
+      await provider.saveContact(_contactData);
+      if (context.mounted) {
+        Navigator.of(context).pop();
+      }
+    } catch (error) {
+      _showErrorDialog(error.toString());
+    } finally {
+      setState(() => _isLoading = false);
     }
+  }
+
+  Future<void> _showErrorDialog(String message) {
+    return showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Erro'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
   }
 
   String? isNotEmpty(String? text) {
@@ -96,52 +124,56 @@ class _ContactPageState extends State<ContactPage> {
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _saveContact,
+        onPressed: _formSubmit,
         child: const Icon(Icons.save),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 80.0),
-              child: Image.asset(
-                AppImages.person,
-                width: 120.0,
-              ),
-            ),
-            Form(
-              key: _formKey,
+      body: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: 'Nome',
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 80.0),
+                    child: Image.asset(
+                      AppImages.person,
+                      width: 120.0,
                     ),
-                    validator: isNotEmpty,
-                    controller: _nameController,
                   ),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: 'E-mail',
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            labelText: 'Nome',
+                          ),
+                          validator: isNotEmpty,
+                          controller: _nameController,
+                        ),
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            labelText: 'E-mail',
+                          ),
+                          validator: isEmail,
+                          controller: _emailController,
+                        ),
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            labelText: 'Telefone',
+                          ),
+                          validator: isPhoneNumber,
+                          controller: _phoneController,
+                        ),
+                      ],
                     ),
-                    validator: isEmail,
-                    controller: _emailController,
-                  ),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: 'Telefone',
-                    ),
-                    validator: isPhoneNumber,
-                    controller: _phoneController,
                   ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
     );
   }
 }
