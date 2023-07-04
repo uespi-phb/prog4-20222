@@ -44,7 +44,7 @@ class _ContactPageState extends State<ContactPage> {
         content: Text(error),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => Navigator.of(ctx).pop(),
             child: const Text('OK'),
           )
         ],
@@ -52,7 +52,7 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
-  Future<void> _saveContact() async {
+  Future<void> _submitForm() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -118,7 +118,7 @@ class _ContactPageState extends State<ContactPage> {
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _saveContact,
+        onPressed: _submitForm,
         child: const Icon(Icons.save),
       ),
       body: _isLoading

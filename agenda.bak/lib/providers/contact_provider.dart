@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -44,7 +45,7 @@ class ContactProvider with ChangeNotifier {
       Uri.parse(url),
       body: jsonEncode(contact),
     );
-    if (response.statusCode == 200) {
+    if (response.statusCode == HttpStatus.ok) {
       final body = jsonDecode(response.body);
       _contacts.add(Contact(
         id: body['name'],
@@ -53,7 +54,7 @@ class ContactProvider with ChangeNotifier {
         phone: contact['phone']!,
       ));
       notifyListeners();
-    } else if (response.statusCode >= 400) {
+    } else if (response.statusCode >= HttpStatus.badRequest) {
       throw Exception('Erro ao criar novo contato.');
     }
   }
